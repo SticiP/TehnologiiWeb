@@ -4,7 +4,7 @@ import PersonPage from './PersonPage';
 const App = () => {
   return (
     <div>
-      <PersonPage /> {/* Folosim componentul PersonPage aici */}
+      <PersonPage />
     </div>
   );
 };

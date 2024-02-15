@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const PersonalPage = observer(() => {
     const { personalData, updatePersonalData } = person;
     const [showModal, setShowModal] = useState(false);
-    const [formData, setFormData] = useState({ ...personalData }); // Inițializare cu o copie a datelor personale
+    const [formData, setFormData] = useState({ ...personalData });
 
     const handleUpdateName = () => {
         if (formData.name.trim() !== '' && formData.age !== 0 && formData.grupa.trim() !== '') {
