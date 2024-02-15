@@ -1,30 +1,28 @@
 // PersonalPage.tsx
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
-import person  from './PersonalStore';
+import person  from './Person';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const PersonalPage: React.FC = observer(() => {
-    const { personalData, updatePersonalData } = person ;
+const PersonalPage = observer(() => {
+    const { personalData, updatePersonalData } = person;
     const [showModal, setShowModal] = useState(false);
-    const [formData, setFormData] = useState(personalData);
+    const [formData, setFormData] = useState({ ...personalData }); // Inițializare cu o copie a datelor personale
 
     const handleUpdateName = () => {
-      if (personalData) {
-        if (formData.name !== '') {
-          updatePersonalData(formData);
-          setShowModal(false); // Închide modalul după actualizare
-        } 
-      }
-  };
+        if (formData.name.trim() !== '' && formData.age !== 0 && formData.grupa.trim() !== '') {
+            updatePersonalData(formData);
+            setShowModal(false); // Închide modalul după actualizare
+        }
+    };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-        ...prevState,
-        [name]: value
-      }));
-  };
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
   return (
     <div className="container">

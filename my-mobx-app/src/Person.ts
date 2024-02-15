@@ -1,20 +1,24 @@
 // PersonalStore.ts
-import { observable, action } from 'mobx';
+import {action, makeAutoObservable } from 'mobx';
 
-class PersonalStore {
-  @observable personalData = {
+class Person {
+  personalData = {
     name: 'Stici Pavel',
     age: 21,
     grupa: 'CR-221'
   };
 
   constructor() {
+    makeAutoObservable(this);
     this.updatePersonalData = this.updatePersonalData.bind(this);
   }
 
-
-  @action updatePersonalData(newData: any) {
-    if (this.personalData) {
+  @action updatePersonalData(newData: {
+    name: string;
+    age: number;
+    grupa: string;
+  }) {
+    if (newData) {
       this.personalData = newData;
       console.log(this.personalData);
     } else {
@@ -23,5 +27,5 @@ class PersonalStore {
   }
 }
 
-const person = new PersonalStore();
+const person = new Person();
 export default person;

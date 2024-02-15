@@ -1,14 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import PersonalPage from './PersonalPage';
+import PersonPage from './PersonPage';
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<PersonalPage />} />
-      </Routes>
-    </Router>
+    <div>
+      <PersonPage /> {/* Folosim componentul PersonPage aici */}
+    </div>
   );
 };
 
