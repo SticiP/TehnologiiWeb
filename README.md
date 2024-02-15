@@ -13,7 +13,7 @@
 
 ### Lucrarea de laborator nr. 3
 
-1. [x] Crearea unui branch nou "Lab_3".
+1. [x]\(Optional) Crearea unui branch nou "Lab_3".
 2. [ ] Crearea unui layout utilizând una din biblioteci ANTD sau Material.
 3. [ ] Să fie afișat un meniu cu o listă de items. 
 4. [ ] Să fie afișată în blocul de la layout denumit content o listă de carduri cu content ce vor fi afișate dinamic. 
