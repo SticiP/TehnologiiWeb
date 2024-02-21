@@ -14,10 +14,10 @@
 ### Lucrarea de laborator nr. 3
 
 1. [x] Crearea unui branch nou "Lab_3".
-2. [ ] Crearea unui layout utilizând una din biblioteci ANTD sau Material.
-3. [ ] Să fie afișat un meniu cu o listă de items. 
+2. [x] Crearea unui layout utilizând una din biblioteci ANTD sau Material.
+3. [x] Să fie afișat un meniu cu o listă de items. 
 4. [ ] Să fie afișată în blocul de la layout denumit content o listă de carduri cu content ce vor fi afișate dinamic. 
-5. [ ] Utilizarea unei forme din libraria utilizată sau o creați singuri(forma). 
-6. [ ] Sa fie cel puțin trei inputuri și un button. 
-7. [ ] Fiecare input să fie un element controlat. 
-8. [ ] La click pe button să se execute un alert sau /și afișarea în '''console.log'''.
+5. [x] Utilizarea unei forme din libraria utilizată sau o creați singuri(forma). 
+6. [x] Sa fie cel puțin trei inputuri și un button. 
+7. [x] Fiecare input să fie un element controlat. 
+8. [x] La click pe button să se execute un alert sau /și afișarea în '''console.log'''.
