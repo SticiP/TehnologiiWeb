@@ -9,14 +9,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const PersonCard = observer(() => {
     return (
         <Card size="small">
-            <Descriptions title="Informații student">
-                {person.personalData.map(item => (
-                    <Descriptions.Item key={item.key} label={item.label}>
-                    {item.children}
-                    </Descriptions.Item>
-                ))}
-            </Descriptions>
-            <EditModal />
         </Card>
     )
 });
