@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Modal, Form, Input, Button } from 'antd';
+import { Modal, Form, Input, Button, DatePicker, Select  } from 'antd';
 import { observer } from 'mobx-react-lite';
 import Person from './Person';
+import dayjs from 'dayjs';
 
 interface Props {
   person: Person;
@@ -20,14 +21,22 @@ const PersonModal: React.FC<Props> = observer(({ person }) => {
     setVisible(false);
   };
 
-  const handleChange = (key: number, value: string) => {
-    const updatedFormData = formData.map(item => {
+  const handleChange = (key: number, value: string | string[]) => {
+
+    let convertedValue: string;
+    if (typeof value === 'string') {
+      convertedValue = value; // Dacă este deja un șir, nu trebuie să facem nimic
+    } else {
+      convertedValue = value[0]; // Dacă este un array, luăm doar primul element
+    }
+  
+    const updatedFormData = formData.map((item) => {
       if (item.key === key) {
-        return { ...item, children: value };
+        return { ...item, children: convertedValue };
       }
       return item;
     });
-    setFormData(updatedFormData); // Actualizez starea locală cu noile date modificate
+    setFormData(updatedFormData);
   };
 
   return (
@@ -53,7 +62,27 @@ const PersonModal: React.FC<Props> = observer(({ person }) => {
         <Form layout="vertical">
           {formData.map((item) => (
             <Form.Item key={item.key} label={item.label}>
-              <Input value={item.children} onChange={(e) => handleChange(item.key, e.target.value)} />
+              {item.type === 'date' ? (
+                <DatePicker
+                  value={item.children ? dayjs(item.children, 'YYYY-MM-DD') : null} // moment este importat din pachetul 'moment'
+                  onChange={(date, dateString) => handleChange(item.key, dateString)}
+                />
+              ) : item.type === 'number' ? (
+                <Input type="number" value={item.children} onChange={(e) => handleChange(item.key, e.target.value)} />
+              ) : item.type === 'select' && item.label === 'Sex' ? (
+                <Select
+                  value={item.children}
+                  style={{ width: 120 }}
+                  onChange={(value) => handleChange(item.key, value)}
+                  options={[
+                    { value: 'Masculin', label: 'Masculin' },
+                    { value: 'Feminin', label: 'Feminin' },
+                    { value: 'Ascuns', label: 'Ascuns' },
+                  ]}
+                />
+              ) : (
+                <Input type={item.type} value={item.children} onChange={(e) => handleChange(item.key, e.target.value)} />
+              )}
             </Form.Item>
           ))}
         </Form>

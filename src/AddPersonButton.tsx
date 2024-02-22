@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Form, Input, FloatButton, Button } from 'antd';
+import { Modal, Form, Input, FloatButton, Button, DatePicker, Select } from 'antd';
 import { observer } from 'mobx-react-lite';
 import Person from './Person';
 
@@ -10,10 +10,10 @@ interface Props {
 
 const AddPersonButton: React.FC<Props> = observer(({ person, onAddPerson }) => {
   const [visible, setVisible] = useState(false);
-  const [formData, setFormData] = useState(person.personalData.map(item => ({ ...item }))); // Copiez datele initiale pentru a le modifica separat
+  const [formData, setFormData] = useState(person.personalData.map(item => ({ ...item })));
 
   const handleOk = () => {
-    person.updatePersonalData(formData); // Actualizez datele în obiectul person
+    person.updatePersonalData(formData);
     setVisible(false);
     onAddPerson();
   };
@@ -22,21 +22,28 @@ const AddPersonButton: React.FC<Props> = observer(({ person, onAddPerson }) => {
     setVisible(false);
   };
 
-  const handleChange = (key: number, value: string) => {
-    const updatedFormData = formData.map(item => {
+  const handleChange = (key: number, value: string | string[]) => {
+    let convertedValue: string;
+    if (typeof value === 'string') {
+      convertedValue = value; // Dacă este deja un șir, nu trebuie să facem nimic
+    } else {
+      convertedValue = value[0]; // Dacă este un array, luăm doar primul element
+    }
+  
+    const updatedFormData = formData.map((item) => {
       if (item.key === key) {
-        return { ...item, children: value };
+        return { ...item, children: convertedValue };
       }
       return item;
     });
-    setFormData(updatedFormData); // Actualizez starea locală cu noile date modificate
+    setFormData(updatedFormData);
   };
 
   return (
     <>
       <FloatButton onClick={() => setVisible(true)} />
       <Modal
-        title="Edit Personal Data"
+        title="Add Person"
         style={{ top: 20 }}
         open={visible}
         onOk={handleOk}
@@ -53,7 +60,24 @@ const AddPersonButton: React.FC<Props> = observer(({ person, onAddPerson }) => {
         <Form layout="vertical">
           {formData.map((item) => (
             <Form.Item key={item.key} label={item.label}>
-              <Input value={item.children} onChange={(e) => handleChange(item.key, e.target.value)} />
+              {item.type === 'date' ? (
+                <DatePicker onChange={(date, dateString) => handleChange(item.key, dateString)} />
+              ) : item.type === 'number' ? (
+                <Input type="number" onChange={(e) => handleChange(item.key, e.target.value)} />
+              ) : item.type === 'select' && item.label === 'Sex' ? (
+                <Select
+                  defaultValue="Masculin"
+                  style={{ width: 120 }}
+                  onChange={(value) => handleChange(item.key, value)}
+                  options={[
+                    { value: 'Masculin', label: 'Masculin' },
+                    { value: 'Feminin', label: 'Feminin' },
+                    { value: 'Ascuns', label: 'Ascuns' },
+                  ]}
+                />
+              ) : (
+                <Input type={item.type} onChange={(e) => handleChange(item.key, e.target.value)} />
+              )}
             </Form.Item>
           ))}
         </Form>
