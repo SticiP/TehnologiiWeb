@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { Modal, Form, Input, Button } from 'antd';
+import { Modal, Form, Input, FloatButton, Button } from 'antd';
 import { observer } from 'mobx-react-lite';
 import Person from './Person';
 
 interface Props {
   person: Person;
+  onAddPerson: () => void;
 }
 
-const PersonModal: React.FC<Props> = observer(({ person }) => {
+const AddPersonButton: React.FC<Props> = observer(({ person, onAddPerson }) => {
   const [visible, setVisible] = useState(false);
   const [formData, setFormData] = useState(person.personalData.map(item => ({ ...item }))); // Copiez datele initiale pentru a le modifica separat
 
   const handleOk = () => {
     person.updatePersonalData(formData); // Actualizez datele în obiectul person
     setVisible(false);
+    onAddPerson();
   };
 
   const handleCancel = () => {
@@ -32,13 +34,11 @@ const PersonModal: React.FC<Props> = observer(({ person }) => {
 
   return (
     <>
-      <Button type="primary" onClick={() => setVisible(true)}>
-        Personal Data
-      </Button>
+      <FloatButton onClick={() => setVisible(true)} />
       <Modal
         title="Edit Personal Data"
         style={{ top: 20 }}
-        visible={visible} // Corectare: Proprietatea corectă este `visible` în loc de `open`
+        open={visible}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
@@ -62,4 +62,4 @@ const PersonModal: React.FC<Props> = observer(({ person }) => {
   );
 });
 
-export default PersonModal;
+export default AddPersonButton;

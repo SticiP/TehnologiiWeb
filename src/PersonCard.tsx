@@ -1,16 +1,27 @@
-// src/PersonCard.tsx
 import React from 'react';
 import { observer } from 'mobx-react';
-import person  from './Person';
 import { Card, Descriptions } from 'antd';
-import EditModal from './PersonModal';
+import PersonModal from './PersonModal';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Person from './Person';
 
-const PersonCard = observer(() => {
-    return (
-        <Card size="small">
-        </Card>
-    )
+interface Props {
+  person: Person;
+}
+
+const PersonCard = observer(({ person }: Props) => {
+  return (
+    <Card size="small">
+      <Descriptions title="Informații student">
+        {person.personalData.map(item => (
+          <Descriptions.Item key={item.key} label={item.label}>
+            {item.children}
+          </Descriptions.Item>
+        ))}
+      </Descriptions>
+      <PersonModal person={person} />
+    </Card>
+  );
 });
 
 export default PersonCard;

@@ -1,4 +1,3 @@
-// src\Person.ts
 import { action, makeAutoObservable } from 'mobx';
 
 interface PersonalInfo {
@@ -8,57 +7,60 @@ interface PersonalInfo {
 }
 
 class Person {
-  personalData: PersonalInfo[] = [
-    {
-      key: 1,
-      label: 'Nume/Prenume',
-      children: 'Stici Pavel',
-    },
-    {
-      key: 2,
-      label: 'Data nașterii',
-      children: '09.10.2002',
-    },
-    {
-      key: 3,
-      label: 'Vârsta',
-      children: '21',
-    },
-    {
-      key: 4,
-      label: 'Sex',
-      children: 'Masculin',
-    },
-    {
-      key: 5,
-      label: 'Grupă',
-      children: 'CR-221',
-    },
-    {
-      key: 6,
-      label: 'Email',
-      children: 'pavelstici@my.erau.edu',
-    },
-    {
-      key: 7,
-      label: 'Telefon',
-      children: '+40 712 345 678',
-    },
-    {
-      key: 8,
-      label: 'Adresă',
-      children: 'Str. Lalelelor, nr. 2, București',
-    },
-    {
-      key: 9,
-      label: 'Cod poștal',
-      children: '010100',
-    }
-  ];
+  personalData: PersonalInfo[];
 
   constructor() {
+    this.personalData = [
+      {
+        key: 1,
+        label: 'Nume/Prenume',
+        children: '',
+      },
+      {
+        key: 2,
+        label: 'Data nașterii',
+        children: '',
+      },
+      {
+        key: 3,
+        label: 'Vârsta',
+        children: '',
+      },
+      {
+        key: 4,
+        label: 'Sex',
+        children: '',
+      },
+      {
+        key: 5,
+        label: 'Grupă',
+        children: '',
+      },
+      {
+        key: 6,
+        label: 'Email',
+        children: '',
+      },
+      {
+        key: 7,
+        label: 'Telefon',
+        children: '',
+      },
+      {
+        key: 8,
+        label: 'Adresă',
+        children: '',
+      },
+      {
+        key: 9,
+        label: 'Cod poștal',
+        children: '',
+      }
+    ];
     makeAutoObservable(this);
   }
+
+
 
   @action.bound
   updatePersonalData(newData: PersonalInfo[]) {
@@ -71,5 +73,4 @@ class Person {
   }
 }
 
-const person = new Person();
-export default person;
+export default Person;

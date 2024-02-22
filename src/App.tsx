@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Button, theme } from 'antd';
+import { Layout, Menu, Button, theme, FloatButton  } from 'antd';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -7,7 +7,9 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
+import Person from './Person';
 import PersonCard from './PersonCard';
+import AddPersonButton from './AddPersonButton';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -16,6 +18,71 @@ const App = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
+  interface PersonalInfo {
+    key: number;
+    label: string;
+    children: string;
+  }
+
+  const personsData: PersonalInfo[] = [
+    {
+      key: 1,
+      label: 'Nume/Prenume',
+      children: 'Stici Pavel',
+    },
+    {
+      key: 2,
+      label: 'Data nașterii',
+      children: '09.10.2002',
+    },
+    {
+      key: 3,
+      label: 'Vârsta',
+      children: '21',
+    },
+    {
+      key: 4,
+      label: 'Sex',
+      children: 'Masculin',
+    },
+    {
+      key: 5,
+      label: 'Grupă',
+      children: 'CR-221',
+    },
+    {
+      key: 6,
+      label: 'Email',
+      children: 'pavelstici@my.erau.edu',
+    },
+    {
+      key: 7,
+      label: 'Telefon',
+      children: '+40 712 345 678',
+    },
+    {
+      key: 8,
+      label: 'Adresă',
+      children: 'Str. Lalelelor, nr. 2, București',
+    },
+    {
+      key: 9,
+      label: 'Cod poștal',
+      children: '010100',
+    }
+  ];
+
+  const [persons, setPersons] = useState([new Person()]);
+  persons[0].updatePersonalData(personsData);
+
+  let tempPerson = new Person();
+
+  const handleAddPerson = () => {
+    const updatedPersons = [...persons, tempPerson];
+    setPersons(updatedPersons);
+    tempPerson = new Person();
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -44,6 +111,7 @@ const App = () => {
               width: 64,
               height: 64,
             }}
+
           />
         </Header>
         <Content
@@ -64,12 +132,16 @@ const App = () => {
               flexWrap: 'wrap',
             }}
           >
-            <PersonCard />
+            {/* Afisează fiecare PersonCard pentru fiecare obiect Person */}
+            {persons.map((person, index) => (
+              <PersonCard key={index} person={person} />
+            ))}
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Footer</Footer>
       </Layout>
+      <AddPersonButton person={tempPerson} onAddPerson={handleAddPerson} />
     </Layout>
+    
   );
 };
 
