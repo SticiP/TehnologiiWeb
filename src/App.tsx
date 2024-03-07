@@ -7,7 +7,7 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
-import Person from './Person';
+import Person, { PersonalData } from './Person';
 import PersonCard from './PersonCard';
 import AddPersonButton from './AddPersonButton';
 
@@ -19,70 +19,18 @@ const App = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  interface PersonalInfo {
-    key: number;
-    label: string;
-    children: string;
-    type: 'text' | 'date' | 'number' | 'select' | 'email'; // Adaugă tipurile de date posibile
-    validationRules?: RegExp; // Adaugă regulile de validare opționale
-  }
 
-  const personsData: PersonalInfo[] = [
-    {
-      key: 1,
-      label: 'Nume/Prenume',
-      children: 'Stici Pavel',
-      type: 'text',
-    },
-    {
-      key: 2,
-      label: 'Data nașterii',
-      children: '2024-02-21',
-      type: 'date',
-    },
-    {
-      key: 3,
-      label: 'Vârsta',
-      children: '21',
-      type: 'number',
-    },
-    {
-      key: 4,
-      label: 'Sex',
-      children: 'Masculin',
-      type: 'select',
-    },
-    {
-      key: 5,
-      label: 'Grupă',
-      children: 'CR-221',
-      type: 'text',
-    },
-    {
-      key: 6,
-      label: 'Email',
-      children: 'pavelstici@my.erau.edu',
-      type: 'email'
-    },
-    {
-      key: 7,
-      label: 'Telefon',
-      children: '079639639',
-      type: 'number'
-    },
-    {
-      key: 8,
-      label: 'Adresă',
-      children: 'Str. Lalelelor, nr. 2, București',
-      type: 'text',
-    },
-    {
-      key: 9,
-      label: 'Cod poștal',
-      children: '010100',
-      type: 'number',
-    }
-  ];
+  const personsData: PersonalData  = {
+    numePrenume : 'Stici Pavel',
+    dataNasterii : '2024-02-21',
+    varsta : 21,
+    sex : 'Masculin',
+    grupa : 'CR-221',
+    email : 'pavelstici@my.erau.edu',
+    telefon : '079639639',
+    adresa : 'Str. Stefan cel Mare, nr. 12, Cluj-Napoca',
+    codPostal : '400000'
+  };
 
   const [persons, setPersons] = useState([new Person()]);
   persons[0].updatePersonalData(personsData);
@@ -160,7 +108,7 @@ const App = () => {
           </div>
         </Content>
       </Layout>
-      <AddPersonButton person={tempPerson} onAddPerson={handleAddPerson} />
+      <AddPersonButton person={tempPerson} onAddPerson={handleAddPerson} type={"Add New Person"} />
     </Layout>
     
   );

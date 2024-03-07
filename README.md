@@ -21,3 +21,10 @@
 6. [x] Sa fie cel puțin trei inputuri și un button. 
 7. [x] Fiecare input să fie un element controlat. 
 8. [x] La click pe button să se execute un alert sau /și afișarea în '''console.log'''.
+
+### Lucrarea de laborator nr. 4
+1. [x] Crearea branch "Lab_4". 
+2. [x] Crearea unui fișier de tip type script. 
+3. [x] Crearea unei interfețe cu declararea a cel puțin 5 field-uri.
+4. [ ] Crearea altei interfețe cu extindere de la prima interfață cu adăugarea minim a 2 field-uri.
+5. [x] Folosirea field-urilor declarate in interfață, într-un obiect (const).

@@ -1,9 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Card, Descriptions } from 'antd';
-import PersonModal from './PersonModal';
+import EditPersonModal from './EditPersonModal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Person from './Person';
+import moment from 'moment';
 
 interface Props {
   person: Person;
@@ -12,14 +13,14 @@ interface Props {
 const PersonCard = observer(({ person }: Props) => {
   return (
     <Card size="small">
-      <Descriptions title="Informații student">
-        {person.personalData.map(item => (
-          <Descriptions.Item key={item.key} label={item.label}>
-            {item.children}
+      <Descriptions title="Personal Data">
+        {Object.entries(person.personalData).map(([key, value]) => (
+          <Descriptions.Item key={key} label={key}>
+            {key === 'dataNasterii' ? moment(value).format('DD/MM/YYYY') : value}
           </Descriptions.Item>
         ))}
       </Descriptions>
-      <PersonModal person={person} />
+      <EditPersonModal person={person} type="Edit Person Data" />
     </Card>
   );
 });
