@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Modal, Form, Input, Button } from 'antd';
-import { Formik, useFormik } from 'formik-antd';
 import { observer } from 'mobx-react-lite';
 import Person, { PersonalData } from './Person';
 

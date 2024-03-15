@@ -21,8 +21,8 @@ const PersonCard = observer(({ person }: Props) => {
           </Descriptions.Item>
         ))}
       </Descriptions>
-      {/* <EditPersonModal person={person} type="Edit Person Data" /> */}
-      <PersonFormikModal person={person}/>
+      <EditPersonModal person={person} type="Edit Person Data" />
+      {/* <PersonFormikModal person={person}/> */}
     </Card>
   );
 });
