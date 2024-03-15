@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import { observer } from 'mobx-react-lite';
 import Person from './Person';
 import PersonFormModal from './PersonFormModal';
+import PersonFormikModal from './PersonFormikModal';
 
 interface Props {
   person: Person;

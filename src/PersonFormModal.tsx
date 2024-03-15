@@ -74,9 +74,6 @@ const PersonFormModal: React.FC<Props> = observer(({ person, visible, onCancel, 
             ]}
           />
         </Form.Item>
-        <Form.Item label="Grupă">
-          <Input value={formData.grupa} onChange={(e) => handleChange('grupa', e.target.value)} />
-        </Form.Item>
         <Form.Item label="Email">
           <Input type="email" value={formData.email} onChange={(e) => handleChange('email', e.target.value)} />
         </Form.Item>

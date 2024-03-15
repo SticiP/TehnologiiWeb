@@ -7,7 +7,7 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
-import Person, { PersonalData } from './Person';
+import Person, { Employee, PersonalData } from './Person';
 import PersonCard from './PersonCard';
 import AddPersonButton from './AddPersonButton';
 
@@ -25,7 +25,6 @@ const App = () => {
     dataNasterii : '2024-02-21',
     varsta : 21,
     sex : 'Masculin',
-    grupa : 'CR-221',
     email : 'pavelstici@my.erau.edu',
     telefon : '079639639',
     adresa : 'Str. Stefan cel Mare, nr. 12, Cluj-Napoca',

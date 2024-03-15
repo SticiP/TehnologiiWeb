@@ -6,29 +6,37 @@ export interface PersonalData {
   dataNasterii: string;
   varsta: number;
   sex: 'Masculin' | 'Feminin' | 'Altul';
-  grupa: string;
   email: string;
   telefon: string;
   adresa: string;
   codPostal: string;
 }
 
-class Person {
-  personalData: PersonalData;
+export interface Employee extends PersonalData {
+  jobTitle: string;
+  salary: number;
+  department: string;
+}
 
-  constructor() {
+class Person {
+  personalData: PersonalData | Employee;
+
+  constructor(initialData?: PersonalData | Employee) {
       this.personalData = {
       numePrenume: '',
       dataNasterii: dayjs().format('YYYY-MM-DD'),
       varsta: 0,
       sex: 'Altul',
-      grupa: '',
       email: '',
       telefon: '',
       adresa: '',
-      codPostal: ''
+      codPostal: '',
     };
     makeAutoObservable(this);
+
+    if (initialData) {
+      this.updatePersonalData(initialData);
+    }
   }
 
 
