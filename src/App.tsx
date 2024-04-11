@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Button, theme  } from 'antd';
+import { Layout, Button, theme  } from 'antd';
+import { Key } from 'antd/lib/table/interface';
 import {
   MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
+  MenuUnfoldOutlined
 } from '@ant-design/icons';
-import Person, { Employee, PersonalData } from './Person';
+import Person, { Employee } from './Person';
 import PersonCard from './PersonCard';
-import AddPersonButton from './AddPersonButton';
+import AddForm from './AddForm';
+import MainPageMenu from './MainPageMenu';
 
 const { Header, Sider, Content } = Layout;
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [selectedKey, setSelectedKey] = useState('1'); // Initially select '1'
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
 
-  const personsData: PersonalData  = {
+  const personsData: Employee  = {
     numePrenume : 'Stici Pavel',
     dataNasterii : '2024-02-21',
     varsta : 21,
@@ -28,7 +29,9 @@ const App = () => {
     email : 'pavelstici@my.erau.edu',
     telefon : '079639639',
     adresa : 'Str. Stefan cel Mare, nr. 12, Cluj-Napoca',
-    codPostal : '400000'
+    jobTitle : 'Programator',
+    salary : 3000,
+    department : 'IT',
   };
 
   const [persons, setPersons] = useState([new Person()]);
@@ -42,32 +45,44 @@ const App = () => {
     tempPerson = new Person();
   }
 
+  const handleSelectedKeyChange = (key: Key) => {
+    setSelectedKey(String(key));
+  };
+
+
+  const renderContent = () => {
+    switch (selectedKey) {
+      case '1':
+        return (
+          <div
+            style={{
+              background: '#fff',
+              padding: 24,
+              minHeight: 280,
+              display: 'flex',
+              gap: '20px',
+              flexWrap: 'wrap',
+            }}
+          >
+            {persons.map((person, index) => (
+              <PersonCard key={index} person={person} />
+            ))}
+          </div>
+        );
+      case '2':
+        return <AddForm person={tempPerson} optional={handleAddPerson} />;
+      case '3':
+        return <div>Nav 3 Content</div>; // Placeholder for Nav 3 content
+      default:
+        return null;
+    }
+  };
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
-            },
-          ]}
-        />
+        <MainPageMenu onMenuItemSelect={handleSelectedKeyChange} />
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
@@ -91,23 +106,10 @@ const App = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-          <div
-            style={{
-              background: '#fff',
-              padding: 24,
-              minHeight: 280,
-              display: 'flex',
-              gap: '20px',
-              flexWrap: 'wrap',
-            }}
-          >
-            {persons.map((person, index) => (
-              <PersonCard key={index} person={person} />
-            ))}
-          </div>
+          {renderContent()}
         </Content>
       </Layout>
-      <AddPersonButton person={tempPerson} onAddPerson={handleAddPerson} type={"Add New Person"} />
+      {/* <AddPersonButton person={tempPerson} onAddPerson={handleAddPerson} type={"Add New Person"} /> */}
     </Layout>
     
   );

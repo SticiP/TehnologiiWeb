@@ -83,9 +83,6 @@ const PersonFormModal: React.FC<Props> = observer(({ person, visible, onCancel, 
         <Form.Item label="Adresă">
           <Input value={formData.adresa} onChange={(e) => handleChange('adresa', e.target.value)} />
         </Form.Item>
-        <Form.Item label="Cod poștal">
-          <Input type="number" value={formData.codPostal} onChange={(e) => handleChange('codPostal', e.target.value)} />
-        </Form.Item>
       </Form>
     </Modal>
   );

@@ -5,7 +5,6 @@ import EditPersonModal from './EditPersonModal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Person from './Person';
 import moment from 'moment';
-import PersonFormikModal from './PersonFormikModal';
 
 interface Props {
   person: Person;
@@ -22,7 +21,6 @@ const PersonCard = observer(({ person }: Props) => {
         ))}
       </Descriptions>
       <EditPersonModal person={person} type="Edit Person Data" />
-      {/* <PersonFormikModal person={person}/> */}
     </Card>
   );
 });
