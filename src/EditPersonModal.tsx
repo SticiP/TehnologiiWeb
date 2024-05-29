@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { Button } from 'antd';
 import { observer } from 'mobx-react-lite';
-import Person from './Person';
+import { PersonalData, Employee } from './Person';
 import PersonFormModal from './PersonFormModal';
 
 interface Props {
-  person: Person;
-  type : string;
+  person: PersonalData | Employee;
+  type: string;
 }
 
 const PersonModal: React.FC<Props> = observer(({ person, type }) => {
   const [visible, setVisible] = useState(false);
-
 
   const handleCancel = () => {
     setVisible(false);

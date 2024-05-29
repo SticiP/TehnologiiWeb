@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import app from "./firebase";
 import { getDatabase, ref, onValue } from "firebase/database";
 import PersonCard from "./PersonCard";
-import PersonalData, { Employee } from "./Person";
+import  { Employee } from "./Person";
 
 const Read = () => {
     const [persons, setPersons] = useState([]);

@@ -26,5 +26,19 @@
 1. [x] Crearea branch "Lab_4". 
 2. [x] Crearea unui fișier de tip type script. 
 3. [x] Crearea unei interfețe cu declararea a cel puțin 5 field-uri.
-4. [ ] Crearea altei interfețe cu extindere de la prima interfață cu adăugarea minim a 2 field-uri.
+4. [x] Crearea altei interfețe cu extindere de la prima interfață cu adăugarea minim a 2 field-uri.
 5. [x] Folosirea field-urilor declarate in interfață, într-un obiect (const).
+
+### Lucrarea de laborator nr. 5.1
+1. [x] Crearea branch “Laboratorul_5” 
+2. [x] Conecatarea Mobx 
+3. [x] Crearea Provider Store 
+4. [x] Toate datele din store local al componentei sa fie transformate pentru mobx store.       
+5. [x] Sa fie creat un action care muteaza datele din store sau si model.
+
+### Lucrarea de laborator nr 5.2
+#### Eu am folosit in loc de local storage firebase
+1. [x] Crearea unor metode generice pentru stocarea datelor in localStorage. 
+2. [x] La prima rulare daca localStorage este gol sa fie persistata data in localStorage. 
+3. [x] Modificarea datelor din localStorage prin wrapper de la Mobx. 
+4. [x] Primirea datelor initale de la localStorage sa fie creata o emitare a async functions prin metoda setTimout care primele 2 sec. sa arate un loading dupa care sa aduca datele din localStorage.

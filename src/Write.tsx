@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import app from "./firebase";
 import { getDatabase, ref, set, push } from "firebase/database";
-import PersonalData, {Employee} from "./Person";
+import {PersonalData, Employee} from "./Person";
 
 const Write = () => {
 

@@ -1,11 +1,10 @@
-import { observer } from 'mobx-react';
-import { Card, Descriptions } from 'antd';
+import React from 'react';
+import { observer } from 'mobx-react-lite';
+import { Card, Descriptions, Button, Spin } from 'antd';
 import EditPersonModal from './EditPersonModal';
-import { useEffect, useState } from 'react';
-import { getDatabase, ref, get } from 'firebase/database';
-import app from './firebase';
 import moment from 'moment';
-import { PersonalData, Employee, useEmployeeData, usePersonalData } from './Person';
+import store from './store';
+import { PersonalData, Employee } from './Person';
 
 interface Props {
   personId: string;
@@ -13,19 +12,16 @@ interface Props {
 }
 
 const PersonCard = observer(({ personId, type }: Props) => {
-  const [person, setPerson] = useState<PersonalData | Employee | null>(null);
-  const data = type === 'Employee' ? useEmployeeData() : usePersonalData(); // Alegem funcția de citire în funcție de tipul persoanei
+  const data = type === 'Employee' ? store.employeeData : store.personalData;
+  const person = data.find((item) => item.id === personId);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const selectedPerson = data.find((item) => item.id === personId); // Găsim persoana în datele citite
-      if (selectedPerson) {
-        setPerson(selectedPerson);
-      }
-    };
+  const handleDelete = () => {
+    store.deletePersonalData(personId, type);
+  };
 
-    fetchData();
-  }, [personId, type, data]);
+  if (store.loading) {
+    return <Spin />;
+  }
 
   if (!person) return null;
 
@@ -33,15 +29,18 @@ const PersonCard = observer(({ personId, type }: Props) => {
     <Card size="small">
       <Descriptions title={person.numePrenume}>
         {Object.entries(person).map(([key, value]) => (
-          (key !== 'numePrenume' && key !== 'id') && (
+          key !== 'numePrenume' && key !== 'id' && (
             <Descriptions.Item key={key} label={key}>
-              {key === 'dataNasterii' ? moment(value).format('DD/MM/YYYY') : (key === 'salary' ? `${value} lei` : value)}
+              {key === 'dataNasterii' ? moment(value).format('DD/MM/YYYY') : key === 'salary' ? `${value} lei` : value}
             </Descriptions.Item>
           )
         ))}
       </Descriptions>
       <br />
       <EditPersonModal person={person} type="Edit Person Data" />
+      <Button type="primary" danger onClick={handleDelete} style={{ marginTop: '10px', float: 'right' }}>
+        Delete
+      </Button>
     </Card>
   );
 });

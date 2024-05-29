@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
-import { Layout, Button, theme  } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Layout, Button, theme, Spin } from 'antd';
 import { Key } from 'antd/lib/table/interface';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined
-} from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { observer } from 'mobx-react-lite';
 import PersonCard from './PersonCard';
 import AddForm from './AddForm';
 import MainPageMenu from './MainPageMenu';
-import Write from "./Write";
-import Read from "./Read";
-import PersonalData, { Employee, useEmployeeData, usePersonalData } from "./Person";
+import Write from './Write';
+import Read from './Read';
+import store from './store';
+import { Employee, PersonalData } from './Person';
 
 const { Header, Sider, Content } = Layout;
 
-const App = () => {
+const App = observer(() => {
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedKey, setSelectedKey] = useState('1-1'); 
+  const [selectedKey, setSelectedKey] = useState('1-1');
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -26,10 +25,16 @@ const App = () => {
     setSelectedKey(String(key));
   };
 
-  const employee : Employee[] = useEmployeeData();
-  const persons : PersonalData[] = usePersonalData();
+  useEffect(() => {
+    store.fetchPersonalData();
+    store.fetchEmployeeData();
+  }, []);
 
   const renderContent = () => {
+    if (store.loading) {
+      return <Spin/>;
+    }
+
     switch (selectedKey) {
       case '1-1':
         return (
@@ -43,11 +48,11 @@ const App = () => {
               flexWrap: 'wrap',
             }}
           >
-            {persons.map((item, index) => (
+            {store.personalData.map((item, index) => (
               <PersonCard personId={item.id} key={index} type="Person" />
             ))}
           </div>
-        )
+        );
       case '1-2':
         return (
           <div
@@ -60,7 +65,7 @@ const App = () => {
               flexWrap: 'wrap',
             }}
           >
-            {employee.map((item, index) => (
+            {store.employeeData.map((item, index) => (
               <PersonCard key={index} personId={item.id} type="Employee" />
             ))}
           </div>
@@ -69,8 +74,8 @@ const App = () => {
         return <AddForm />;
       case '3':
         return <Write />;
-      case '4' :
-        return <Read />
+      case '4':
+        return <Read />;
       default:
         return null;
     }
@@ -93,7 +98,6 @@ const App = () => {
               width: 64,
               height: 64,
             }}
-
           />
         </Header>
         <Content
@@ -108,8 +112,7 @@ const App = () => {
         </Content>
       </Layout>
     </Layout>
-    
   );
-};
+});
 
 export default App;

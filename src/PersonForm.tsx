@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { Formik, FormikHelpers } from 'formik';
+import React from 'react';
+import { Formik } from 'formik';
 import { Input, Button, Form, Select, DatePicker, InputNumber } from 'antd';
 import PhoneInput from "antd-phone-input";
-import PersonalData, { Employee } from './Person';
 import dayjs from 'dayjs';
 import * as Yup from 'yup';
-import app from "./firebase";
-import { getDatabase, ref, set, push } from "firebase/database";
+import store from './store';
+import { PersonalData } from './Person';
 
 const validationSchema = Yup.object().shape({
   numePrenume: Yup.string().required('Nume/Prenume este obligatoriu'),
@@ -15,22 +14,11 @@ const validationSchema = Yup.object().shape({
 });
 
 const PersonForm = () => {
-
   const handleSubmit = (values: PersonalData) => {
-    const { id, ...dataWithoutId } = values; // Dezambalezi id-ul din obiectul values
-    const db = getDatabase(app);
-    const dbRef = ref(db, "Persons/person");
-    
-    push(dbRef, dataWithoutId) // Trimiteți datele fără id-ul către Firebase
-      .then(() => {
-        alert("Datele au fost salvate cu succes!");
-      })
-      .catch((error) => {
-        alert("Eroare la salvarea datelor: " + error.message);
-      });
+    store.addPersonalData(values);
   };
 
-  const initial : PersonalData = {
+  const initial: PersonalData = {
     id: '',
     numePrenume: '',
     dataNasterii: dayjs().format('YYYY-MM-DD'),
@@ -39,13 +27,13 @@ const PersonForm = () => {
     email: '',
     telefon: '',
     adresa: '',
-  }
+  };
 
   return (
     <Formik
       initialValues={initial}
       validationSchema={validationSchema}
-      onSubmit={(values ,{ setSubmitting }) => {
+      onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values);
         setSubmitting(false);
       }}
@@ -123,8 +111,6 @@ const PersonForm = () => {
               name="adresa"
             />
           </Form.Item>
-
-
 
           <Form.Item>
             <Button type="primary" htmlType="submit">Submit</Button>
