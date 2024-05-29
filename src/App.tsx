@@ -5,54 +5,33 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined
 } from '@ant-design/icons';
-import Person, { Employee } from './Person';
 import PersonCard from './PersonCard';
 import AddForm from './AddForm';
 import MainPageMenu from './MainPageMenu';
+import Write from "./Write";
+import Read from "./Read";
+import PersonalData, { Employee, useEmployeeData, usePersonalData } from "./Person";
 
 const { Header, Sider, Content } = Layout;
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedKey, setSelectedKey] = useState('1'); // Initially select '1'
+  const [selectedKey, setSelectedKey] = useState('1-1'); 
 
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-
-  const personsData: Employee  = {
-    numePrenume : 'Stici Pavel',
-    dataNasterii : '2024-02-21',
-    varsta : 21,
-    sex : 'Masculin',
-    email : 'pavelstici@my.erau.edu',
-    telefon : '079639639',
-    adresa : 'Str. Stefan cel Mare, nr. 12, Cluj-Napoca',
-    jobTitle : 'Programator',
-    salary : 3000,
-    department : 'IT',
-  };
-
-  const [persons, setPersons] = useState([new Person()]);
-  persons[0].updatePersonalData(personsData);
-
-  let tempPerson = new Person();
-
-  const handleAddPerson = () => {
-    const updatedPersons = [...persons, tempPerson];
-    setPersons(updatedPersons);
-    tempPerson = new Person();
-  }
-
   const handleSelectedKeyChange = (key: Key) => {
     setSelectedKey(String(key));
   };
 
+  const employee : Employee[] = useEmployeeData();
+  const persons : PersonalData[] = usePersonalData();
 
   const renderContent = () => {
     switch (selectedKey) {
-      case '1':
+      case '1-1':
         return (
           <div
             style={{
@@ -64,15 +43,34 @@ const App = () => {
               flexWrap: 'wrap',
             }}
           >
-            {persons.map((person, index) => (
-              <PersonCard key={index} person={person} />
+            {persons.map((item, index) => (
+              <PersonCard personId={item.id} key={index} type="Person" />
+            ))}
+          </div>
+        )
+      case '1-2':
+        return (
+          <div
+            style={{
+              background: '#fff',
+              padding: 24,
+              minHeight: 280,
+              display: 'flex',
+              gap: '20px',
+              flexWrap: 'wrap',
+            }}
+          >
+            {employee.map((item, index) => (
+              <PersonCard key={index} personId={item.id} type="Employee" />
             ))}
           </div>
         );
       case '2':
-        return <AddForm person={tempPerson} optional={handleAddPerson} />;
+        return <AddForm />;
       case '3':
-        return <div>Nav 3 Content</div>; // Placeholder for Nav 3 content
+        return <Write />;
+      case '4' :
+        return <Read />
       default:
         return null;
     }
@@ -109,7 +107,6 @@ const App = () => {
           {renderContent()}
         </Content>
       </Layout>
-      {/* <AddPersonButton person={tempPerson} onAddPerson={handleAddPerson} type={"Add New Person"} /> */}
     </Layout>
     
   );

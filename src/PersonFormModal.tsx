@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import type { DatePickerProps } from 'antd';
 import { Modal, Form, Input, Button, DatePicker, Select } from 'antd';
 import { observer } from 'mobx-react-lite';
-import Person, { PersonalData } from './Person';
+import PersonalData from './Person';
 import dayjs from 'dayjs';
 
 interface Props {
-  person: Person;
+  person: PersonalData;
   visible: boolean;
   onCancel: () => void;
   type: string;
@@ -14,10 +14,10 @@ interface Props {
 }
 
 const PersonFormModal: React.FC<Props> = observer(({ person, visible, onCancel, type, optional }) => {
-  const [formData, setFormData] = useState<PersonalData>(person.personalData);
+  const [formData, setFormData] = useState<PersonalData>(person);
 
   const handleOk = () => {
-    person.updatePersonalData(formData);
+    // person.updatePersonalData(formData);
     optional();
     onCancel();
   };
@@ -30,7 +30,7 @@ const PersonFormModal: React.FC<Props> = observer(({ person, visible, onCancel, 
   };
 
   const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-    person.personalData.dataNasterii = Array.isArray(dateString) ? dateString[0] : dateString;
+    person.dataNasterii = Array.isArray(dateString) ? dateString[0] : dateString;
   };
 
   return (

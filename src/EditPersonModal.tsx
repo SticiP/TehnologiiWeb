@@ -19,7 +19,7 @@ const PersonModal: React.FC<Props> = observer(({ person, type }) => {
 
   return (
     <>
-      <Button type="primary" onClick={() => setVisible(true)}>
+      <Button type="primary" onClick={() => setVisible(true)} id={person.numePrenume}>
         {type}
       </Button>
       <PersonFormModal person={person} visible={visible} onCancel={handleCancel} type={type} optional={() => null} />

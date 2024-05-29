@@ -1,7 +1,11 @@
+import { useEffect, useState } from 'react';
+import { getDatabase, ref, get, onValue } from 'firebase/database';
+import app from './firebase';
 import { action, makeAutoObservable } from 'mobx';
 import dayjs from 'dayjs';
 
 export interface PersonalData {
+  id: string;
   numePrenume: string;
   dataNasterii: string;
   varsta: number;
@@ -17,58 +21,52 @@ export interface Employee extends PersonalData {
   department: string;
 }
 
-const data1: PersonalData = {
-  numePrenume: '',
-  dataNasterii: dayjs().format('YYYY-MM-DD'),
-  varsta: 0,
-  sex: 'Altul',
-  email: '',
-  telefon: '',
-  adresa: '',
+export const useEmployeeData = () => {
+  const [data, setData] = useState<Employee[]>([]);
+
+  useEffect(() => {
+    const dbRef = ref(getDatabase(app), 'Persons/employee');
+    const unsubscribe = onValue(dbRef, (snapshot) => {
+      const dataFromSnapshot = snapshot.val();
+      if (dataFromSnapshot) {
+        const mappedData: Employee[] = Object.entries(dataFromSnapshot).map(([key, value]) => ({
+          id: key,
+          ...(value as any)
+        }));
+        setData(mappedData);
+      } else {
+        console.log('No data available');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  return data;
 };
 
-const data2: Employee = {
-  numePrenume: '',
-  dataNasterii: dayjs().format('YYYY-MM-DD'),
-  varsta: 0,
-  sex: 'Altul',
-  email: '',
-  telefon: '',
-  adresa: '',
-  jobTitle: '',
-  salary: 0,
-  department: '',
-}
+export const usePersonalData = () => {
+  const [data, setData] = useState<PersonalData[]>([]);
 
-export class Person {
-  personalData: PersonalData | Employee;
+  useEffect(() => {
+    const dbRef = ref(getDatabase(app), 'Persons/person');
+    const unsubscribe = onValue(dbRef, (snapshot) => {
+      const dataFromSnapshot = snapshot.val();
+      if (dataFromSnapshot) {
+        const mappedData: PersonalData[] = Object.entries(dataFromSnapshot).map(([key, value]) => ({
+          id: key,
+          ...(value as any)
+        }));
+        setData(mappedData);
+      } else {
+        console.log('No data available');
+      }
+    });
 
-  constructor(initialData?: PersonalData | Employee) {
+    return () => unsubscribe();
+  }, []);
 
-    if (initialData) {
-      this.personalData = initialData;
-    } else {
-      this.personalData = data1;
-    }
-    
-    makeAutoObservable(this);
+  return data;
+};
 
-    if (initialData) {
-      this.updatePersonalData(initialData);
-    }
-  }
-
-
-
-  @action.bound
-  updatePersonalData(newData: Partial<PersonalData>) {
-    if (newData) {
-      this.personalData = { ...this.personalData, ...newData };
-      // console.log(this.personalData);
-    } else {
-      console.error('Eroare: newData este null sau indefinit.');
-    }
-  }
-}
-
-export default Person;
+export default PersonalData;
