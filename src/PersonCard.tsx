@@ -4,7 +4,6 @@ import { Card, Descriptions, Button, Spin } from 'antd';
 import EditPersonModal from './EditPersonModal';
 import moment from 'moment';
 import store from './store';
-import { PersonalData, Employee } from './Person';
 
 interface Props {
   personId: string;
