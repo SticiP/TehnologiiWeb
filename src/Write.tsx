@@ -1,37 +1,31 @@
-import React, { useState } from 'react';
-import app from "./firebase";
-import { getDatabase, ref, set, push } from "firebase/database";
-import {PersonalData, Employee} from "./Person";
+import React from 'react';
+import { Button } from 'antd';
+import { getDatabase, ref, set } from 'firebase/database';
+import app from './firebase';
 
-const Write = () => {
+const Write: React.FC = () => {
+  const handleSaveUserDetails = () => {
+    const db = getDatabase(app);
+    const userRef = ref(db, 'users/pavel_stici@iis_utm_md'); // Firebase does not support dots in keys, replacing dots with underscores
+    set(userRef, {
+      email: 'pavel.stici@iis.utm.md',
+      nume: 'Pavel Stici'
+    })
+      .then(() => {
+        alert('User details saved successfully!');
+      })
+      .catch((error) => {
+        alert('Error saving user details: ' + error.message);
+      });
+  };
 
-    const personsData: PersonalData  = {
-        id : '1',
-        numePrenume : 'Melnic Andrian',
-        dataNasterii : '2022-07-24',
-        varsta : 20,
-        sex : 'Masculin',
-        email : 'melnic.andrian@my.erau.edu',
-        telefon : '0721234567',
-        adresa : 'Bucuresti Str. Nr. 1 Sector 1',
-    };
-
-    const saveData = async (): Promise<void> => {
-        const db = getDatabase(app);
-        const newDocRef = push(ref(db, "Persons/person"));
-        set(newDocRef, personsData).then( () => {
-            alert("data saved successfully");
-        }).catch((error) => {
-            alert("error: " + error.message);
-        });
-    };
-
-    return (
-        <div>
-            <h1>WRITE/HOMEPAGE</h1>
-            <button onClick={saveData}>SAVE DATA</button>
-        </div>
-    );
-}
+  return (
+    <div>
+      <Button type="primary" onClick={handleSaveUserDetails}>
+        Save User Details
+      </Button>
+    </div>
+  );
+};
 
 export default Write;

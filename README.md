@@ -42,3 +42,11 @@
 2. [x] La prima rulare daca localStorage este gol sa fie persistata data in localStorage. 
 3. [x] Modificarea datelor din localStorage prin wrapper de la Mobx. 
 4. [x] Primirea datelor initale de la localStorage sa fie creata o emitare a async functions prin metoda setTimout care primele 2 sec. sa arate un loading dupa care sa aduca datele din localStorage.
+
+### Lucrarea de laborator nr 6
+#### Eu am folosit pentru salvarea de users firebase Authentication
+1. [x] Crearea branch “Laboratorul_6” 
+2. [x] Elaborarea unei forme de logare din doua campuri username si password 
+3. [x] Sa verifice daca exista datele in localStorage in caz de succes sa returneze un mesaj de succes iar in  caz de eroare sa va returneze un mesaj de eroare. 
+4. [x] Datele initial sa fie pastrate intr-un array de users cu mock data . 
+5. [x] Datele sa fie persistate la initializarea app in localStorage
