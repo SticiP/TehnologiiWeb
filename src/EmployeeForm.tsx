@@ -15,18 +15,17 @@ const validationSchema = Yup.object().shape({
 
 const PersonForm = () => {
 
-  const handleSubmit = (values: Employee) => {
+  const handleSubmit = (values: Omit<Employee, 'id'>) => {
     const db = getDatabase(app);
-        const newDocRef = push(ref(db, "Persons/employee"));
-        set(newDocRef, values).then( () => {
-            alert("data saved successfully");
-        }).catch((error) => {
-            alert("error: " + error.message);
-        });
+    const newDocRef = push(ref(db, "Persons/employee"));
+    set(newDocRef, values).then(() => {
+      alert("data saved successfully");
+    }).catch((error) => {
+      alert("error: " + error.message);
+    });
   };
 
-  const initial : Employee = {
-    id: '',
+  const initial: Omit<Employee, 'id'> = {
     numePrenume: '',
     dataNasterii: dayjs().format('YYYY-MM-DD'),
     varsta: 0,
@@ -37,13 +36,13 @@ const PersonForm = () => {
     jobTitle: '',
     salary: 0,
     department: '',
-  }
+  };
 
   return (
     <Formik
       initialValues={initial}
       validationSchema={validationSchema}
-      onSubmit={(values ,{ setSubmitting }) => {
+      onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values);
         setSubmitting(false);
       }}
@@ -51,10 +50,10 @@ const PersonForm = () => {
       {({ handleSubmit, handleChange, setFieldValue, values, errors }) => (
         <Form onFinish={handleSubmit}>
           <Form.Item label="Nume/Prenume" validateStatus={errors.numePrenume ? 'error' : ''} help={errors.numePrenume}>
-            <Input 
-              id='numePrenume' 
-              name='numePrenume' 
-              value={values.numePrenume} 
+            <Input
+              id='numePrenume'
+              name='numePrenume'
+              value={values.numePrenume}
               onChange={handleChange}
             />
           </Form.Item>
@@ -65,20 +64,21 @@ const PersonForm = () => {
               name='dataNasterii'
               value={dayjs(values.dataNasterii, 'YYYY-MM-DD')}
               onChange={(date) => {
-                if(date == null) date = dayjs();
-                setFieldValue('dataNasterii', date.format('YYYY-MM-DD'))
+                if (date == null) date = dayjs();
+                setFieldValue('dataNasterii', date.format('YYYY-MM-DD'));
               }}
             />
           </Form.Item>
 
           <Form.Item label="Vârsta">
-            <InputNumber 
+            <InputNumber
               id='varsta'
               name='varsta'
-              type="number" 
+              type="number"
               value={values.varsta}
               min={0} max={150}
-              onChange={(value) => setFieldValue('varsta', value)} />
+              onChange={(value) => setFieldValue('varsta', value)}
+            />
           </Form.Item>
 
           <Form.Item label="Sex">
@@ -95,12 +95,12 @@ const PersonForm = () => {
           </Form.Item>
 
           <Form.Item label="Email" validateStatus={errors.email ? 'error' : ''} help={errors.email}>
-            <Input 
-              id="email" 
-              name="email" 
-              type="email" 
-              value={values.email} 
-              onChange={handleChange} 
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              value={values.email}
+              onChange={handleChange}
             />
           </Form.Item>
 
@@ -112,10 +112,10 @@ const PersonForm = () => {
               onChange={(value) => setFieldValue('telefon', '+' + value.countryCode + value.areaCode + value.phoneNumber)}
             />
           </Form.Item>
-          
+
           <Form.Item label="Adresă">
-            <Input 
-              value={values.adresa} 
+            <Input
+              value={values.adresa}
               onChange={handleChange}
               id="adresa"
               name="adresa"
@@ -123,8 +123,8 @@ const PersonForm = () => {
           </Form.Item>
 
           <Form.Item label="Denumirea postului">
-            <Input 
-              value={values.jobTitle} 
+            <Input
+              value={values.jobTitle}
               onChange={handleChange}
               id="jobTitle"
               name="jobTitle"
@@ -132,18 +132,19 @@ const PersonForm = () => {
           </Form.Item>
 
           <Form.Item label="Salariul">
-            <InputNumber 
+            <InputNumber
               id='salary'
               name='salary'
-              type="number" 
+              type="number"
               value={values.salary}
               min={0}
-              onChange={(value) => setFieldValue('salary', value)} /> Lei
+              onChange={(value) => setFieldValue('salary', value)}
+            /> Lei
           </Form.Item>
 
           <Form.Item label="Departament">
-            <Input 
-              value={values.department} 
+            <Input
+              value={values.department}
               onChange={handleChange}
               id="department"
               name="department"

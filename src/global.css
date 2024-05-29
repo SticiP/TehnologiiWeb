@@ -1,0 +1,11 @@
+.spin-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Înălțimea va fi întreaga înălțime a ferestrei */
+  }
+
+body {
+    padding: 0px;
+    margin: 0px;
+}

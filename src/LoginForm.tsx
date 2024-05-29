@@ -3,12 +3,14 @@ import { Form, Input, Button, Card, Alert } from 'antd';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import app from './firebase';
 import { GoogleOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const auth = getAuth(app);
 
 const LoginForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const onFinish = (values: { username: string; password: string }) => {
     const { username, password } = values;
@@ -16,6 +18,7 @@ const LoginForm: React.FC = () => {
       .then((userCredential) => {
         setSuccess("Logare reușită!");
         setError(null);
+        navigate('/persons');
       })
       .catch((error) => {
         setError("Eroare la logare. Verificați datele introduse.");

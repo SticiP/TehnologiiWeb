@@ -91,6 +91,20 @@ class Store {
   }
 
   @action
+  updateEmployeeData(data: Employee) {
+    const db = getDatabase(app);
+    const dbRef = ref(db, `Persons/employee/${data.id}`);
+
+    set(dbRef, data)
+      .then(() => {
+        alert("Datele au fost actualizate cu succes!");
+      })
+      .catch((error) => {
+        alert("Eroare la actualizarea datelor: " + error.message);
+      });
+  }
+
+  @action
   deletePersonalData(id: string, type: 'Person' | 'Employee') {
     const db = getDatabase(app);
     const dbRef = ref(db, `Persons/${type.toLowerCase()}/${id}`);

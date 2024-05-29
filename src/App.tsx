@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Button, Menu, Dropdown, Spin, theme } from 'antd';
-import { Key } from 'antd/lib/table/interface';
+import { Layout, Button, Dropdown, Menu, Spin, theme } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, DownOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react-lite';
 import { getAuth, onAuthStateChanged, signOut, User } from 'firebase/auth';
 import { getDatabase, ref, get } from 'firebase/database';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import store from './store';
 import MainPageMenu from './MainPageMenu';
@@ -13,6 +13,7 @@ import AddForm from './AddForm';
 import Write from './Write';
 import Read from './Read';
 import app from './firebase';
+import './global.css'; // Importă fișierul CSS global
 
 const { Header, Sider, Content } = Layout;
 
@@ -20,15 +21,11 @@ const auth = getAuth(app);
 
 const App = observer(() => {
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedKey, setSelectedKey] = useState<Key>('1-1');
   const [user, setUser] = useState<User | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
 
   const { token } = theme.useToken();
-
-  const handleSelectedKeyChange = (key: Key) => {
-    setSelectedKey(String(key));
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserName = async (email: string) => {
@@ -53,17 +50,18 @@ const App = observer(() => {
       } else {
         setUser(null);
         setUserName(null);
+        navigate('/login');
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [navigate]);
 
   const handleLogout = () => {
-    signOut(auth);
+    signOut(auth).then(() => navigate('/login'));
   };
 
-  const menu = (
+  const menuItems = (
     <Menu>
       <Menu.Item key="logout" onClick={handleLogout}>
         Logout
@@ -71,67 +69,33 @@ const App = observer(() => {
     </Menu>
   );
 
-  const renderContent = () => {
-    if (store.loading) {
-      return <Spin tip="Loading..." />;
-    }
-
-    if (!user) {
-      return <LoginForm />;
-    }
-
-    switch (selectedKey) {
-      case '1-1':
-        return (
-          <div
-            style={{
-              background: '#fff',
-              padding: 24,
-              minHeight: 280,
-              display: 'flex',
-              gap: '20px',
-              flexWrap: 'wrap',
-            }}
-          >
-            {store.personalData.map((item, index) => (
-              <PersonCard personId={item.id} key={index} type="Person" />
-            ))}
-          </div>
-        );
-      case '1-2':
-        return (
-          <div
-            style={{
-              background: '#fff',
-              padding: 24,
-              minHeight: 280,
-              display: 'flex',
-              gap: '20px',
-              flexWrap: 'wrap',
-            }}
-          >
-            {store.employeeData.map((item, index) => (
-              <PersonCard key={index} personId={item.id} type="Employee" />
-            ))}
-          </div>
-        );
-      case '2':
-        return <AddForm />;
-      case '3':
-        return <Write />;
-      case '4':
-        return <Read />;
-      default:
-        return null;
-    }
-  };
+  const renderPersonList = (type: 'Person' | 'Employee') => (
+    <div
+      style={{
+        background: '#fff',
+        padding: 24,
+        minHeight: 280,
+        display: 'flex',
+        gap: '20px',
+        flexWrap: 'wrap',
+      }}
+    >
+      {type === 'Person'
+        ? store.personalData.map((item, index) => (
+            <PersonCard personId={item.id} key={index} type="Person" />
+          ))
+        : store.employeeData.map((item, index) => (
+            <PersonCard key={index} personId={item.id} type="Employee" />
+          ))}
+    </div>
+  );
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       {user && (
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <div className="demo-logo-vertical" />
-          <MainPageMenu onMenuItemSelect={handleSelectedKeyChange} />
+          <MainPageMenu />
         </Sider>
       )}
       <Layout>
@@ -150,7 +114,7 @@ const App = observer(() => {
           )}
           {user && (
             <div style={{ marginRight: '20px', display: 'flex', alignItems: 'center' }}>
-              <Dropdown overlay={menu}>
+              <Dropdown overlay={menuItems}>
                 <Button type="text" icon={<UserOutlined />}>
                   {userName || user.email} <DownOutlined />
                 </Button>
@@ -166,7 +130,21 @@ const App = observer(() => {
             borderRadius: token.borderRadiusLG,
           }}
         >
-          {renderContent()}
+          {store.loading ? (
+            <div className="spin-container">
+              <Spin size="large" />
+            </div>
+          ) : (
+            <Routes>
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/persons" element={renderPersonList('Person')} />
+              <Route path="/employees" element={renderPersonList('Employee')} />
+              <Route path="/add" element={<AddForm />} />
+              <Route path="/write" element={<Write />} />
+              <Route path="/read" element={<Read />} />
+              <Route path="/" element={user ? renderPersonList('Person') : <LoginForm />} />
+            </Routes>
+          )}
         </Content>
       </Layout>
     </Layout>

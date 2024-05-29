@@ -3,11 +3,11 @@ import type { DatePickerProps } from 'antd';
 import { Modal, Form, Input, Button, DatePicker, Select } from 'antd';
 import { observer } from 'mobx-react-lite';
 import store from './store';
-import { PersonalData } from './Person';
+import { PersonalData, Employee } from './Person';
 import dayjs from 'dayjs';
 
 interface Props {
-  person: PersonalData;
+  person: PersonalData | Employee;
   visible: boolean;
   onCancel: () => void;
   type: string;
@@ -15,15 +15,19 @@ interface Props {
 }
 
 const PersonFormModal: React.FC<Props> = observer(({ person, visible, onCancel, type, optional }) => {
-  const [formData, setFormData] = useState<PersonalData>(person);
+  const [formData, setFormData] = useState<PersonalData | Employee>(person);
 
   const handleOk = () => {
-    store.updatePersonalData(formData);
+    if ('jobTitle' in formData) {
+      store.updateEmployeeData(formData as Employee);
+    } else {
+      store.updatePersonalData(formData as PersonalData);
+    }
     optional();
     onCancel();
   };
 
-  const handleChange = (key: keyof PersonalData, value: string | number | null) => {
+  const handleChange = (key: keyof (Employee), value: string | number | null) => {
     setFormData(prevData => ({
       ...prevData,
       [key]: value
@@ -87,6 +91,19 @@ const PersonFormModal: React.FC<Props> = observer(({ person, visible, onCancel, 
         <Form.Item label="Adresă">
           <Input value={formData.adresa} onChange={(e) => handleChange('adresa', e.target.value)} />
         </Form.Item>
+        {'jobTitle' in formData && (
+          <>
+            <Form.Item label="Job Title">
+              <Input value={formData.jobTitle} onChange={(e) => handleChange('jobTitle', e.target.value)} />
+            </Form.Item>
+            <Form.Item label="Salary">
+              <Input type="number" value={formData.salary.toString()} onChange={(e) => handleChange('salary', parseInt(e.target.value, 10))} />
+            </Form.Item>
+            <Form.Item label="Department">
+              <Input value={formData.department} onChange={(e) => handleChange('department', e.target.value)} />
+            </Form.Item>
+          </>
+        )}
       </Form>
     </Modal>
   );

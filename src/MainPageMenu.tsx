@@ -1,13 +1,8 @@
 import React from 'react';
-
 import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
-
-import {
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined,
-} from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -28,30 +23,52 @@ function getItem(
 }
 
 const items: MenuProps['items'] = [
-  getItem('Persons List', '1', <UserOutlined />, [
-    getItem('Persons', '1-1'),
-    getItem('Employees', '1-2'),
-  ]),
-  getItem('Add Person', '2', <UploadOutlined />),
-  getItem('Write', '3', <VideoCameraOutlined />),
-  getItem('Read', '4', <VideoCameraOutlined />),
-
+  getItem(
+    <span>
+      <Link to="/persons">Persons List</Link>
+    </span>,
+    '1',
+    <UserOutlined />,
+    [
+      getItem(
+        <span>
+          <Link to="/persons">Persons</Link>
+        </span>,
+        '1-1'
+      ),
+      getItem(
+        <span>
+          <Link to="/employees">Employees</Link>
+        </span>,
+        '1-2'
+      ),
+    ]
+  ),
+  getItem(
+    <span>
+      <Link to="/add">Add Person</Link>
+    </span>,
+    '2',
+    <UploadOutlined />
+  ),
+  getItem(
+    <span>
+      <Link to="/write">Write</Link>
+    </span>,
+    '3',
+    <VideoCameraOutlined />
+  ),
+  getItem(
+    <span>
+      <Link to="/read">Read</Link>
+    </span>,
+    '4',
+    <VideoCameraOutlined />
+  ),
 ];
 
-const MainPageMenu: React.FC<{ onMenuItemSelect: (key: React.Key) => void }> = ({ onMenuItemSelect }) => {
-      const onClick: MenuProps['onClick'] = (e) => {
-        onMenuItemSelect(e.key);
-      };
-    
-      return (
-        <Menu
-          onClick={onClick}
-          theme='dark'
-          defaultSelectedKeys={['1']}
-          mode="inline"
-          items={items}
-        />
-      );
-};
+const MainPageMenu: React.FC = () => (
+  <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+);
 
 export default MainPageMenu;
