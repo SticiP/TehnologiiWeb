@@ -50,3 +50,9 @@
 3. [x] Sa verifice daca exista datele in localStorage in caz de succes sa returneze un mesaj de succes iar in  caz de eroare sa va returneze un mesaj de eroare. 
 4. [x] Datele initial sa fie pastrate intr-un array de users cu mock data . 
 5. [x] Datele sa fie persistate la initializarea app in localStorage
+
+### Lucrarea de laborator nr 7
+1. [x] Sa instalati pachetul ReactRouter. 
+2. [x] Sa il conectati conform API de pe pagina oficiala. 
+3. [x] Sa conectati rutele in componenta de afisare a liste (Menu). 
+4. [x] Sa utilizati functionalul de rander a componentei ce vine din ReactRouter pentru afisare datelor dinamic in depedenta din linkul accesat (forma/login/content page, etc) 
